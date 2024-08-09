@@ -16,7 +16,7 @@ interface TreeNodeProps {
     node: TreeNode;
 }
 
-const TreeNode: React.FC<TreeNodeProps> = ({ node }) => {
+const TreeNodeComponent = ({ node }: TreeNodeProps) => {
     const dispatch = useDispatch();
     const [open, setOpen] = React.useState(true);
 
@@ -35,7 +35,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node }) => {
                 <Collapse in={open} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
                         {node.children.map((child: any) => (
-                            <TreeNode key={child.id} node={child} />
+                            <TreeNodeComponent key={child.id} node={child} />
                         ))}
                     </List>
                 </Collapse>
@@ -44,13 +44,13 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node }) => {
     );
 };
 
-export const Tree: React.FC = () => {
+export const Tree = () => {
     const nodes = useSelector((state: RootState) => state.tree.nodes);
 
     return (
         <List>
             {nodes.map((node) => (
-                <TreeNode key={node.id} node={node} />
+                <TreeNodeComponent key={node.id} node={node} />
             ))}
         </List>
     );
