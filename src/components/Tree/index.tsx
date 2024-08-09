@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { selectNode } from '../store/treeSlice';
@@ -8,9 +8,12 @@ import { ExpandLess, ExpandMore } from '@mui/icons-material';
 interface TreeNode {
     id: string;
     name: string;
+    properties?: {
+        color?: string;
+        fontSize?: string;
+    };
     children?: TreeNode[];
 }
-
 
 interface TreeNodeProps {
     node: TreeNode;
@@ -25,16 +28,27 @@ const TreeNodeComponent = ({ node }: TreeNodeProps) => {
         dispatch(selectNode(node.id));
     };
 
+
+    useEffect(() => {
+        if (node.properties) {
+            const listItem = document.getElementById(node.id);
+            if (listItem) {
+                listItem.style.color = node.properties.color || 'inherit';
+                listItem.style.fontSize = node.properties.fontSize || 'inherit';
+            }
+        }
+    }, [node.properties]);
+
     return (
         <>
-            <ListItem onClick={handleClick}>
+            <ListItem id={node.id} onClick={handleClick}>
                 <ListItemText primary={node.name} />
                 {node.children ? (open ? <ExpandLess /> : <ExpandMore />) : null}
             </ListItem>
             {node.children && (
                 <Collapse in={open} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
-                        {node.children.map((child: any) => (
+                        {node.children.map((child) => (
                             <TreeNodeComponent key={child.id} node={child} />
                         ))}
                     </List>
