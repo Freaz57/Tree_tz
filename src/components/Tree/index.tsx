@@ -5,8 +5,15 @@ import { selectNode } from '../store/treeSlice';
 import { List, ListItem, ListItemText, Collapse } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 
+interface TreeNode {
+    id: string;
+    name: string;
+    children?: TreeNode[];
+}
+
+
 interface TreeNodeProps {
-    node: any;
+    node: TreeNode;
 }
 
 const TreeNode: React.FC<TreeNodeProps> = ({ node }) => {
