@@ -36,7 +36,7 @@ const App = () => {
     useEffect(() => {
         const node = findNodeById(selectedNodeId, nodes);
         setSelectedNode(node);
-    }, [selectedNodeId, nodes]);  // Обновляем узел при изменении идентификатора или структуры дерева
+    }, [selectedNodeId, nodes]);
 
     const nodeName = selectedNode ? selectedNode.name : "Не выбрано";
     const textColor = selectedNode?.properties?.color || "inherit";
