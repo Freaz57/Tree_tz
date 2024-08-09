@@ -4,7 +4,10 @@ interface TreeNode {
     id: string;
     name: string;
     children?: TreeNode[];
-    properties?: Record<string, any>;
+    properties?: {
+        color?: string;
+        fontSize?: string;
+    };
 }
 
 interface TreeState {
@@ -27,7 +30,7 @@ const initialState: TreeState = {
                             name: 'Grandchild Node 1.1',
                             properties: {
                                 color: 'red',
-                                size: '10px',
+                                fontSize: '12px',
                             },
                         },
                         {
@@ -35,13 +38,13 @@ const initialState: TreeState = {
                             name: 'Grandchild Node 1.2',
                             properties: {
                                 color: 'green',
-                                size: '20px',
+                                fontSize: '20px',
                             },
                         },
                     ],
                     properties: {
                         color: 'gray',
-                        size: '5px',
+                        fontSize: '15px',
                     },
                 },
                 {
@@ -49,7 +52,7 @@ const initialState: TreeState = {
                     name: 'Child Node 2',
                     properties: {
                         color: 'blue',
-                        size: '11px',
+                        fontSize: '11px',
                     },
                 },
             ],
@@ -63,9 +66,11 @@ const treeSlice = createSlice({
     name: 'tree',
     initialState,
     reducers: {
+
         selectNode: (state, action: PayloadAction<string>) => {
             state.selectedNodeId = action.payload;
         },
+
         updateNodeProperties: (
             state,
             action: PayloadAction<{ nodeId: string; properties: Record<string, any> }>
@@ -75,15 +80,17 @@ const treeSlice = createSlice({
                 node.properties = { ...node.properties, ...action.payload.properties };
             }
         },
+
         loadTree: (state, action: PayloadAction<TreeNode[]>) => {
             state.nodes = action.payload;
         },
     },
 });
 
-export const { selectNode, updateNodeProperties, loadTree } = treeSlice.actions;
 
+export const { selectNode, updateNodeProperties, loadTree } = treeSlice.actions;
 export default treeSlice.reducer;
+
 
 function findNodeById(nodes: TreeNode[], id: string): TreeNode | undefined {
     for (const node of nodes) {
@@ -93,4 +100,5 @@ function findNodeById(nodes: TreeNode[], id: string): TreeNode | undefined {
             if (found) return found;
         }
     }
+    return undefined;
 }

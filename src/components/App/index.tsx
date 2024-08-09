@@ -3,14 +3,16 @@ import { Tree } from '../Tree';
 import { Properties } from '../Properties';
 import { JsonHandler } from '../JsonHandler';
 import { Grid, Container, Paper, Typography } from '@mui/material';
-import {useSelector} from "react-redux";
-import {RootState} from "../store";
-
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 interface TreeNode {
     id: string;
     name: string;
-    properties?: Record<string, any>;
+    properties?: {
+        color?: string;
+        fontSize?: string;
+    };
     children?: TreeNode[];
 }
 
@@ -31,6 +33,8 @@ const App = () => {
 
     const selectedNode = findNodeById(selectedNodeId, nodes);
     const nodeName = selectedNode ? selectedNode.name : "Не выбрано";
+    const textColor = selectedNode?.properties?.color || "black"; // Используем цвет узла, если он задан, иначе черный
+    const fontSize = selectedNode?.properties?.fontSize || "16px"; // Используем размер шрифта узла, если он задан, иначе 16px
 
     return (
         <Container maxWidth="lg" style={{ marginTop: '20px' }}>
@@ -46,7 +50,12 @@ const App = () => {
                 </Grid>
                 <Grid item xs={8}>
                     <Paper style={{ padding: '10px', height: '100%' }}>
-                        <Typography variant="h6">Свойства выбранного элемента: {nodeName}</Typography>
+                        <Typography
+                            variant="h6"
+                            style={{ color: textColor, fontSize: fontSize }}
+                        >
+                            Свойства выбранного элемента: {nodeName}
+                        </Typography>
                         <Properties />
                         <JsonHandler />
                     </Paper>
