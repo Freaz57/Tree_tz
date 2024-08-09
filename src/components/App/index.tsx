@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Tree } from '../Tree';
 import { Properties } from '../Properties';
 import { JsonHandler } from '../JsonHandler';
@@ -20,6 +20,8 @@ const App = () => {
     const selectedNodeId = useSelector((state: RootState) => state.tree.selectedNodeId);
     const nodes = useSelector((state: RootState) => state.tree.nodes);
 
+    const [selectedNode, setSelectedNode] = React.useState<TreeNode | null>(null);
+
     const findNodeById = (id: string | null, nodes: TreeNode[]): TreeNode | null => {
         for (const node of nodes) {
             if (node.id === id) return node;
@@ -31,9 +33,13 @@ const App = () => {
         return null;
     };
 
-    const selectedNode = findNodeById(selectedNodeId, nodes);
+    useEffect(() => {
+        const node = findNodeById(selectedNodeId, nodes);
+        setSelectedNode(node);
+    }, [selectedNodeId, nodes]);  // Обновляем узел при изменении идентификатора или структуры дерева
+
     const nodeName = selectedNode ? selectedNode.name : "Не выбрано";
-    const textColor = selectedNode?.properties?.color;
+    const textColor = selectedNode?.properties?.color || "inherit";
     const fontSize = selectedNode?.properties?.fontSize || "16px";
 
     return (
