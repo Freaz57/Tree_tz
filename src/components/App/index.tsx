@@ -33,8 +33,8 @@ const App = () => {
 
     const selectedNode = findNodeById(selectedNodeId, nodes);
     const nodeName = selectedNode ? selectedNode.name : "Не выбрано";
-    const textColor = selectedNode?.properties?.color || "black"; // Используем цвет узла, если он задан, иначе черный
-    const fontSize = selectedNode?.properties?.fontSize || "16px"; // Используем размер шрифта узла, если он задан, иначе 16px
+    const textColor = selectedNode?.properties?.color;
+    const fontSize = selectedNode?.properties?.fontSize || "16px";
 
     return (
         <Container maxWidth="lg" style={{ marginTop: '20px' }}>
